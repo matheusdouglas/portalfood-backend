@@ -19,20 +19,30 @@ import { SendOrderController } from "./controllers/order/SendOrderController";
 import { ListOrderController } from "./controllers/order/ListOrderController";
 import { DetailOrderController } from "./controllers/order/DetailOrderController";
 import { FinishOrderController } from "./controllers/order/FinishOrderController";
+import { ListOrderOpenController } from "./controllers/order/ListOrderOpenController";
 
+import { StudentController } from "./controllers/student/CreateStudentController";
+import { ListByStudentController } from "./controllers/student/ListByStudentController";
 
 import { isAthenticated } from "./middlewares/isAuthenticated"
 
 import uploadConfig from './config/multer'
+import { ListByUserController } from "./controllers/user/ListByUserController";
 
 const router = Router();
 
 const upload = multer(uploadConfig.upload("./tmp"))
 
+//Rotas Student
+
+router.post('/student', new StudentController().handle)
+router.get('/student', new ListByStudentController().handle)
+
 // Rotas User
 router.post('/users', new CreateUserController().handle)
 router.post('/session', new AuthUserController().handle)
 router.get('/me', isAthenticated, new DetailUserController().handle)
+router.get('/users', new ListByUserController().handle)
 
 // Rotas Category 
 
@@ -53,6 +63,7 @@ router.delete('/order/remove', isAthenticated, new RemoveItemController().handle
 router.put('/order/send', isAthenticated, new SendOrderController().handle)
 router.get('/orders', isAthenticated, new ListOrderController().handle)
 router.get('/order/detail', isAthenticated, new DetailOrderController().handle)
+router.get('/order/open', isAthenticated, new ListOrderOpenController().handle)
 
 // enviar pedido 
 router.put('/order/finish', isAthenticated, new FinishOrderController().handle)

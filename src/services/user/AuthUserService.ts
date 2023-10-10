@@ -34,6 +34,7 @@ class AuthUserService {
         const token = sign({
             name: user.name,
             email: user.email,
+            is_admin: user.is_admin, // Inclua o campo is_admin no payload
         },
           process.env.JWT_SECRET,
           {
@@ -41,11 +42,11 @@ class AuthUserService {
             expiresIn: '30d'
           }
         )
-       
         return {
             id: user.id,
             name: user.name,
             email: user.email,
+            is_admin: user.is_admin,
             token: token
         }
     }

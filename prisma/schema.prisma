@@ -10,15 +10,45 @@ datasource db {
 // cria uma migration: yarn prisma migrate dev
 
 model User {
-  id        String    @id @default(uuid())
-  name      String
-  email     String
-  password  String
-  create_at DateTime? @default(now())
-  update_at DateTime? @default(now())
-  
+  id         String     @id @default(uuid())
+  name       String
+  email      String
+  password   String
+  is_admin   Boolean    @default(false) // Define o padrão como false
+  create_at  DateTime? @default(now())
+  update_at  DateTime? @default(now())
+  responsible_students Student[] 
 
   @@map("users")
+}
+
+model Order {
+  id          String     @id @default(uuid())
+  table       Int
+  status      Boolean    @default(false)
+  draft       Boolean    @default(true)
+  name        String?    // opcional 
+  student     Student?   @relation(fields: [student_id], references: [id])
+  student_id  String?
+  create_at   DateTime?  @default(now())
+  update_at   DateTime?  @default(now())
+  
+  items       Item[]
+
+   @@map("orders")
+}
+
+model Student {
+  id           String     @id @default(uuid())
+  name         String
+  responsible  User       @relation(fields: [responsible_id], references: [id])
+  responsible_id String
+  create_at    DateTime? @default(now())
+  update_at    DateTime? @default(now())
+  
+  orders       Order[]    // Relação com os pedidos
+
+  @@map("students")
 }
 
 
@@ -51,22 +81,6 @@ model Category {
 }
 
 
-
-model Order {
-  id     String  @id @default(uuid())
-  table  Int
-  status Boolean @default(false)
-  draft  Boolean @default(true)
-  name   String? // opcional 
-
-  create_at DateTime? @default(now())
-  update_at DateTime? @default(now())
-
-  items Item[]
-
-  @@map("orders")
-}
-
 model Item {
   id     String @id @default(uuid())
   amount Int
@@ -75,7 +89,7 @@ model Item {
   update_at DateTime? @default(now())
 
   order   Order   @relation(fields: [order_id], references: [id])
-  product Product @relation(fields: [product_id], references: [id]) // cria um campo e faz referencia ao id
+  product Product @relation(fields: [product_id], references: [id]) 
 
   order_id   String
   product_id String
