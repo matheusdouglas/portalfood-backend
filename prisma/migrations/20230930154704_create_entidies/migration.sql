@@ -4,10 +4,36 @@ CREATE TABLE "users" (
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "is_admin" BOOLEAN NOT NULL DEFAULT false,
     "create_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "orders" (
+    "id" TEXT NOT NULL,
+    "table" INTEGER NOT NULL,
+    "status" BOOLEAN NOT NULL DEFAULT false,
+    "draft" BOOLEAN NOT NULL DEFAULT true,
+    "name" TEXT,
+    "student_id" TEXT,
+    "create_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "update_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "students" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "responsible_id" TEXT NOT NULL,
+    "create_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "update_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "students_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -35,19 +61,6 @@ CREATE TABLE "categories" (
 );
 
 -- CreateTable
-CREATE TABLE "orders" (
-    "id" TEXT NOT NULL,
-    "table" INTEGER NOT NULL,
-    "status" BOOLEAN NOT NULL DEFAULT false,
-    "draft" BOOLEAN NOT NULL DEFAULT true,
-    "name" TEXT,
-    "create_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-    "update_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "items" (
     "id" TEXT NOT NULL,
     "amount" INTEGER NOT NULL,
@@ -58,6 +71,12 @@ CREATE TABLE "items" (
 
     CONSTRAINT "items_pkey" PRIMARY KEY ("id")
 );
+
+-- AddForeignKey
+ALTER TABLE "orders" ADD CONSTRAINT "orders_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "students"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "students" ADD CONSTRAINT "students_responsible_id_fkey" FOREIGN KEY ("responsible_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_category_id_fkey" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
