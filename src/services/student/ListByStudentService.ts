@@ -6,6 +6,7 @@ class ListByStudentService {
       select: {
         id: true,
         name: true,
+        plate: true,
       },
     });
 
