@@ -3,11 +3,11 @@ import { CreateStudentService } from "../../services/student/CreateStudentServic
 
 class StudentController {
     async handle(req: Request, res: Response) {
-        const { name, responsible_id } = req.body;
+        const { name, plate, responsible_id } = req.body;
         
         const createStudent = new CreateStudentService();
 
-        const student = createStudent.execute({ name, responsible_id });
+        const student = createStudent.execute({ name, plate, responsible_id });
 
         return res.json(student);
     }
