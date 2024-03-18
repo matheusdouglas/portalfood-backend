@@ -9,7 +9,7 @@ import { CreateCategoryController } from "./controllers/category/CreateCategoryC
 import { ListCategoryController } from "./controllers/category/ListCategoryController";
 
 import { CreateProductController } from "./controllers/Product/CreateProductController";
-import { ListBycategoryController } from "./controllers/Product/ListByCategoryController";
+
 
 import { CreateOrderController } from "./controllers/order/CreateOrderController";
 import { RemoverOrderController } from "./controllers/order/OrderController";
@@ -28,6 +28,9 @@ import { isAthenticated } from "./middlewares/isAuthenticated"
 
 import uploadConfig from './config/multer'
 import { ListByUserController } from "./controllers/user/ListByUserController";
+import { DetailStudentController } from "./controllers/order/StudentOrderIdController";
+import { ListByStudentResposibleController } from "./controllers/student/ListByStudentResposibleController";
+import { ListBycategoryProductController } from "./controllers/Product/ListByCategoryController";
 
 const router = Router();
 
@@ -37,6 +40,7 @@ const upload = multer(uploadConfig.upload("./tmp"))
 
 router.post('/student', new StudentController().handle)
 router.get('/student', new ListByStudentController().handle)
+router.get('/student/resposible/:id', new ListByStudentResposibleController().handle)
 
 // Rotas User
 router.post('/users', new CreateUserController().handle)
@@ -52,7 +56,7 @@ router.get('/category', isAthenticated, new ListCategoryController().handle)
 // Rotas Product 
 
 router.post('/product',isAthenticated, upload.single('file'),  new CreateProductController().handle)
-router.get('/category/product', isAthenticated, new ListBycategoryController().handle)
+router.get('/category/product', isAthenticated, new ListBycategoryProductController().handle)
 
 // Rotas Order 
 
@@ -64,6 +68,7 @@ router.put('/order/send', isAthenticated, new SendOrderController().handle)
 router.get('/orders', isAthenticated, new ListOrderController().handle)
 router.get('/order/detail', isAthenticated, new DetailOrderController().handle)
 router.get('/order/open', isAthenticated, new ListOrderOpenController().handle)
+router.get('/order/detail/student', isAthenticated, new DetailStudentController().handle)
 
 // enviar pedido 
 router.put('/order/finish', isAthenticated, new FinishOrderController().handle)

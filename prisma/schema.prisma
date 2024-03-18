@@ -41,6 +41,7 @@ model Order {
 model Student {
   id           String     @id @default(uuid())
   name         String
+  plate        String
   responsible  User       @relation(fields: [responsible_id], references: [id])
   responsible_id String
   create_at    DateTime? @default(now())

@@ -29,6 +29,7 @@ CREATE TABLE "orders" (
 CREATE TABLE "students" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "plate" TEXT NOT NULL,
     "responsible_id" TEXT NOT NULL,
     "create_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "update_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,

@@ -22,16 +22,12 @@ export function isAthenticated(
 
   try {
     // Validar o token
-    const { sub, is_admin } = verify(
+    const { sub } = verify(
       token,
       process.env.JWT_SECRET
     ) as Payload;
 
-    // Verificar se o usuário é um administrador
-    if (!is_admin) {
-      // Se não for um administrador, negue o acesso
-      return res.status(403).json({ message: 'Acesso negado' });
-    }
+
 
     // Recuperar o ID do usuário e colocá-lo dentro de uma variável 'user_id' dentro do req
     req.user_id = sub;

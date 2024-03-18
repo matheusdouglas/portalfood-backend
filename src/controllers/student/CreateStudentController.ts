@@ -1,17 +1,28 @@
-import { Request, Response } from "express";
-import { CreateStudentService } from "../../services/student/CreateStudentService";
+import { Request, Response } from 'express';
+import { CreateStudentService } from '../../services/student/CreateStudentService';
+import prismaClient from '../../prisma';
 
 class StudentController {
-    async handle(req: Request, res: Response) {
-        const { name, responsible_id } = req.body;
-        
-        const createStudent = new CreateStudentService();
+  async handle(request: Request, response: Response) {
+    const { name, plate, responsible_id } = request.body;
 
-        const student = createStudent.execute({ name, responsible_id });
+   
+    const studentAlreadyExists = await prismaClient.student.findFirst({
+      where: {
+        plate: plate,
+      },
+    });
 
-        return res.json(student);
+    if (studentAlreadyExists) {
+        throw new Error("Matricula ja cadastrada")
     }
 
+    
+    const createStudentService = new CreateStudentService();
+    const student = await createStudentService.execute({ name, plate, responsible_id });
+
+    return response.json(student);
+  }
 }
 
 export { StudentController };
