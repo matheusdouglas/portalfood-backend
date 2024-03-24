@@ -68,7 +68,7 @@ router.put('/order/send', isAthenticated, new SendOrderController().handle)
 router.get('/orders', isAthenticated, new ListOrderController().handle)
 router.get('/order/detail', isAthenticated, new DetailOrderController().handle)
 router.get('/order/open', isAthenticated, new ListOrderOpenController().handle)
-router.get('/order/detail/student', isAthenticated, new DetailStudentController().handle)
+router.get('/order/detail/student',  new DetailStudentController().handle)
 
 // enviar pedido 
 router.put('/order/finish', isAthenticated, new FinishOrderController().handle)
